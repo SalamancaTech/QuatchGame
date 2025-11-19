@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card as CardType, Rank, Suit, GameStage, Difficulty } from '../types';
 import Card from './Card';
@@ -36,7 +37,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
     }
   }
 
-  const deckWrapperClasses = "flex flex-col items-center text-center w-24 md:w-28";
+  const deckWrapperClasses = "flex flex-col items-center text-center w-22";
   const isDeckClickable = stage === GameStage.SETUP && dealingStep <= 3;
   const clickableDeckClasses = isDeckClickable ? "cursor-pointer transition-transform hover:scale-105 ring-4 ring-yellow-400 p-2 rounded-lg" : "";
   
@@ -52,12 +53,12 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
   }
 
   const isBinClickable = isCheatingEnabled && binCount > 0;
-  const binWrapperClasses = `flex flex-col items-center text-center w-24 md:w-28 transition-transform ${isBinClickable ? 'cursor-pointer hover:scale-105' : ''}`;
+  const binWrapperClasses = `flex flex-col items-center text-center w-22 transition-transform ${isBinClickable ? 'cursor-pointer hover:scale-105' : ''}`;
   const binRingClass = isBinClickable ? 'ring-2 ring-yellow-400' : '';
 
   const BinPile = (
     <div className={binWrapperClasses} onClick={isBinClickable ? onBinClick : undefined}>
-      <div className={`relative w-20 h-28 md:w-24 md:h-36 ${binRingClass} rounded-lg`}>
+      <div className={`relative w-20 h-28 ${binRingClass} rounded-lg`}>
         {binCount > 0
           ? <Card card={{ suit: Suit.Spades, rank: Rank.Two, value: 0, id: 'bin-card' }} isFaceUp={false} className="opacity-50" difficulty={difficulty} />
           : <Card card={null} difficulty={difficulty} />
@@ -70,15 +71,15 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
   const MpaPile = (
     <div
       ref={mpaRef}
-      className={`${mpaClasses} text-center w-24 md:w-28`}
+      className={`${mpaClasses} text-center w-22`}
       onClick={isPlayerTurn ? onMpaClick : undefined}
       aria-label={isPlayerTurn ? (hasSelectedCards ? 'Play selected cards to the pile' : 'Eat the pile') : 'Main Play Area'}
     >
-      <div className="h-8 flex items-end justify-center">
+      <div className="h-6 flex items-end justify-center">
         <div key={comboCount} className={`transition-all duration-300 ${comboCount > 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
           {comboCount > 1 && (
             <span
-              className="text-3xl font-black text-yellow-300"
+              className="text-2xl font-black text-yellow-300"
               style={{ textShadow: '0 0 5px rgba(0,0,0,0.8), 0 0 10px #fde047' }}
             >
               x{comboCount}
@@ -86,7 +87,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
           )}
         </div>
       </div>
-      <div className={`relative w-20 h-28 md:w-24 md:h-36 transition-opacity ${isEating ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`relative w-20 h-28 transition-opacity ${isEating ? 'opacity-0' : 'opacity-100'}`}>
         {mpa.slice(-3).map((card, index) => (
           <div key={card.id} className="absolute inset-0" style={{ transform: `translateX(${index * 4}px) translateY(${index * 4}px)`}}>
               <Card card={index === mpa.slice(-3).length - 1 ? card : null} isFaceUp={true} difficulty={difficulty}/>
@@ -103,7 +104,7 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
       className={`${deckWrapperClasses} ${isDeckClickable ? clickableDeckClasses : ""}`}
       onClick={isDeckClickable ? onDeckClick : undefined}
     >
-      <div className="relative w-20 h-28 md:w-24 md:h-36">
+      <div className="relative w-20 h-28">
           {deckCount > 0
             ? <Card card={{ suit: Suit.Spades, rank: Rank.Two, value: 0, id: 'deck-card' }} isFaceUp={false} difficulty={difficulty}/>
             : <Card card={null} difficulty={difficulty}/>
@@ -124,11 +125,11 @@ const GameBoard: React.FC<GameBoardProps> = ({ deckCount, mpa, binCount, onMpaCl
       </div>
 
       {/* The row containing board elements */}
-      <div className="flex justify-center items-center w-full my-4 h-40 px-4 md:px-8">
+      <div className="flex justify-center items-center w-full my-2 h-32 px-4">
           {stage === GameStage.SETUP ? (
               DeckPile
           ) : (
-              <div className="flex items-center justify-center space-x-2 md:space-x-4">
+              <div className="flex items-center justify-center space-x-2">
                   {BinPile}
                   {MpaPile}
                   {DeckPile}

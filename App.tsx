@@ -425,8 +425,8 @@ const App: React.FC = () => {
         if (player.isAI) {
             if (opponentHandRef.current) {
                 const opponentRect = opponentHandRef.current.getBoundingClientRect();
-                const cardWidth = 96; // from md:w-24 in Card.tsx
-                const cardHeight = 144; // from md:h-36 in Card.tsx
+                const cardWidth = 80; // w-20 (5rem)
+                const cardHeight = 112; // h-28 (7rem)
                 startRect = new DOMRect(
                     opponentRect.left + (opponentRect.width - cardWidth) / 2,
                     opponentRect.top + (opponentRect.height - cardHeight) / 2,
@@ -751,8 +751,8 @@ const App: React.FC = () => {
     const animations: DealAnimationItem[] = [];
     let delay = 0;
     const delayIncrement = 100;
-    const cardWidth = window.innerWidth < 768 ? 80 : 96;
-    const cardHeight = window.innerWidth < 768 ? 112 : 144;
+    const cardWidth = 80; // w-20
+    const cardHeight = 112; // h-28
     const spacing = 16; // Corresponds to space-x-4
     
     let cardsToDeal: {p: CardType[], o: CardType[]};
@@ -1052,7 +1052,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="game-board-bg min-h-screen flex flex-col overflow-hidden relative p-2">
+    <div className="h-[100dvh] w-full max-w-[480px] mx-auto bg-transparent relative overflow-hidden flex flex-col shadow-2xl border-x border-gray-800/50">
       <div 
         className="absolute top-2 left-1/2 -translate-x-1/2 text-white text-sm font-light opacity-25 pointer-events-none select-none"
       >
@@ -1267,7 +1267,7 @@ const App: React.FC = () => {
       />
 
       {/* Game Board Wrapper */}
-      <div className="flex-grow flex flex-col items-center justify-end pb-72">
+      <div className="flex-grow flex flex-col items-center justify-end pb-60">
           {gameState.stage === GameStage.SWAP && (
             <button 
               onClick={handleStartGame} 

@@ -16,7 +16,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ card, isFaceUp = false, isSelected = false, isValid = false, isPlayable = false, onClick, className = '', isDisabled = false, difficulty = 'Medium' }) => {
   if (!card) {
-    return <div className={`w-20 h-28 md:w-24 md:h-36 rounded-lg border-2 border-dashed border-blue-300/50 ${className}`} />;
+    return <div className={`w-20 h-28 rounded-lg border-2 border-dashed border-blue-300/50 ${className}`} />;
   }
   
   const isTinted = difficulty === 'Hard' || difficulty === 'Extreme';
@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = ({ card, isFaceUp = false, isSelected = false,
     ? (card.suit === Suit.Hearts || card.suit === Suit.Diamonds ? 'text-red-900' : 'text-stone-900')
     : (card.suit === Suit.Hearts || card.suit === Suit.Diamonds ? 'text-red-600' : 'text-black');
 
-  const cardBaseStyle = "relative w-20 h-28 md:w-24 md:h-36 rounded-lg shadow-lg p-2 transition-all duration-200 ease-in-out select-none";
+  const cardBaseStyle = "relative w-20 h-28 rounded-lg shadow-lg p-2 transition-all duration-200 ease-in-out select-none";
   
   const showValidHighlight = isSelected && isValid && (difficulty === 'Easy' || difficulty === 'Medium');
   
@@ -192,13 +192,13 @@ const Card: React.FC<CardProps> = ({ card, isFaceUp = false, isSelected = false,
     >
       {/* Large center suit */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className={`text-6xl md:text-8xl opacity-15 ${suitColor}`}>{card.suit}</span>
+          <span className={`text-5xl opacity-15 ${suitColor}`}>{card.suit}</span>
       </div>
     
       {/* Top-left rank and suit */}
       <div className={`relative ${suitColor}`}>
-          <div className="font-black text-2xl md:text-3xl leading-none">{card.rank}</div>
-          <div className="text-xl md:text-2xl leading-none">{card.suit}</div>
+          <div className="font-black text-xl leading-none">{card.rank}</div>
+          <div className="text-lg leading-none">{card.suit}</div>
       </div>
     </div>
   );

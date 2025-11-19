@@ -52,7 +52,7 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
       const MIN_CARD_SPACING = 36; // Ensures rank is visible
       const container = handContainerRef.current;
       const containerWidth = container.offsetWidth;
-      const cardWidth = window.innerWidth >= 768 ? 96 : 80;
+      const cardWidth = 80; // w-20
       const numCards = player.hand.length;
       
       const totalCardsWidthNoOverlap = numCards * cardWidth;
@@ -130,7 +130,7 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
             key={card.id}
             card={card}
             isFaceUp={true}
-            className="w-16 h-24 md:w-20 md:h-28"
+            className="w-14 h-20" // Smaller for opponent
             difficulty={difficulty}
         />
     ));
@@ -140,14 +140,14 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
             key={`${card.id}-${index}`}
             card={card}
             isFaceUp={revealedLSIndices.has(index)} // Cheat logic
-            className={`w-16 h-24 md:w-20 md:h-28 ${isCheatingEnabled ? 'cursor-pointer hover:ring-2 hover:ring-yellow-500' : ''}`}
+            className={`w-14 h-20 ${isCheatingEnabled ? 'cursor-pointer hover:ring-2 hover:ring-yellow-500' : ''}`}
             difficulty={difficulty}
             onClick={() => toggleRevealedLS(index)}
         />
     ));
 
     return (
-        <div className="relative flex justify-center items-center h-40">
+        <div className="relative flex justify-center items-center h-32">
             {showOpponentHandModal && (
               <BinViewModal 
                 cards={player.hand} 
@@ -157,34 +157,34 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
               />
             )}
 
-            <div className="flex items-end space-x-8">
+            <div className="flex items-end space-x-4">
                 {/* Hand Pile */}
                 <div 
                   ref={playerHandRef} 
-                  className={`flex flex-col items-center w-24 md:w-28 ${isCheatingEnabled && handCardCount > 0 ? 'cursor-pointer hover:scale-105 transition-transform' : ''}`}
+                  className={`flex flex-col items-center w-20 ${isCheatingEnabled && handCardCount > 0 ? 'cursor-pointer transform active:scale-105' : ''}`}
                   onClick={() => isCheatingEnabled && handCardCount > 0 && setShowOpponentHandModal(true)}
                 >
-                    <div className={`relative w-16 h-24 md:w-20 md:h-28 ${isCheatingEnabled && handCardCount > 0 ? 'ring-2 ring-yellow-500 rounded-lg' : ''}`}>
+                    <div className={`relative w-14 h-20 ${isCheatingEnabled && handCardCount > 0 ? 'ring-2 ring-yellow-500 rounded-lg' : ''}`}>
                         {handCardCount > 0 && 
                             <Card 
                                 card={{ suit: Suit.Spades, rank: Rank.Two, value: 0, id: 'opponent-hand-pile' }} 
                                 isFaceUp={false} 
-                                className="opacity-80" 
+                                className="opacity-80 w-14 h-20"
                                 difficulty={difficulty}
                             />
                         }
                     </div>
-                    <span className="mt-2 text-sm font-bold text-white">{handCardCount > 0 ? `${handCardCount} in hand` : ''}</span>
+                    <span className="mt-1 text-xs font-bold text-white">{handCardCount > 0 ? `${handCardCount} in hand` : ''}</span>
                 </div>
 
                 {/* LC and LS Cards */}
                 <div ref={cardTableRef} className="relative flex justify-center items-center">
                     {/* Last Stand cards (behind) */}
-                    <div ref={lastStandRef} className="absolute flex justify-center space-x-2">
+                    <div ref={lastStandRef} className="absolute flex justify-center space-x-1">
                       {lsCards}
                     </div>
                     {/* Last Chance cards (in front) */}
-                    <div ref={lastChanceRef} className="relative flex justify-center space-x-2">
+                    <div ref={lastChanceRef} className="relative flex justify-center space-x-1">
                       {lcCards}
                     </div>
                 </div>
@@ -243,28 +243,28 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
     <div className={`flex flex-col items-center transition-all duration-300 rounded-lg ${containerClasses}`}>
       
       {/* LS and LC cards */}
-      <div ref={cardTableRef} className="relative flex flex-col items-center mt-3 -space-y-[92px] md:-space-y-[124px]">
+      <div ref={cardTableRef} className="relative flex flex-col items-center mt-3 -space-y-[92px]">
         {/* Last Stand cards (behind) */}
-        <div ref={lastStandRef} className="relative flex justify-center space-x-4">
+        <div ref={lastStandRef} className="relative flex justify-center space-x-3">
           {lsCards}
         </div>
         {/* Last Chance cards (in front) */}
-        <div ref={lastChanceRef} className={`relative flex justify-center space-x-4 z-10 ${player.lastChance.length === 0 ? 'pointer-events-none' : ''}`}>
+        <div ref={lastChanceRef} className={`relative flex justify-center space-x-3 z-10 ${player.lastChance.length === 0 ? 'pointer-events-none' : ''}`}>
           {lcCards}
         </div>
       </div>
 
 
       {/* Hand */}
-      <div ref={playerHandRef} className="flex justify-center items-end min-h-[160px] w-full px-2 md:px-4 -mt-5">
+      <div ref={playerHandRef} className="flex justify-center items-end min-h-[140px] w-full px-2 -mt-5">
         <div className={`w-full relative flex items-center transition-opacity duration-300 ${player.hand.length === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             {handLayout.needsScrolling && scrollOffset > 0 && (
-                <button onClick={() => scrollHand('left')} className={`${arrowButtonClasses} left-0 md:left-2`}>
+                <button onClick={() => scrollHand('left')} className={`${arrowButtonClasses} left-0`}>
                     &#x2190;
                 </button>
             )}
 
-            <div ref={handContainerRef} className="w-full h-[144px] overflow-hidden">
+            <div ref={handContainerRef} className="w-full h-[128px] overflow-hidden">
                 <div 
                     className="relative h-full transition-transform duration-300 ease-out"
                     style={{
@@ -305,7 +305,7 @@ const PlayerArea: React.FC<PlayerAreaProps> = ({ player, isCurrentPlayer, select
             </div>
 
             {handLayout.needsScrolling && scrollOffset < maxScrollOffset && (
-                <button onClick={() => scrollHand('right')} className={`${arrowButtonClasses} right-0 md:right-2`}>
+                <button onClick={() => scrollHand('right')} className={`${arrowButtonClasses} right-0`}>
                     &#x2192;
                 </button>
             )}
