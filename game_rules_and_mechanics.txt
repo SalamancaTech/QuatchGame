@@ -1,0 +1,92 @@
+# Quatch Card Game: Rules and Mechanics
+
+This document details the complete rules and game mechanics of the Quatch Card Game, based on the application's source code.
+
+## 1. Objective
+
+The primary objective is to be the first player to discard all cards from three distinct areas: your **Hand**, your **Last Chance** pile, and your **Last Stand** pile.
+
+## 2. The Deck
+
+The game uses a modified standard 52-card deck:
+- All four suits are used (Spades, Hearts, Clubs, Diamonds).
+- All standard ranks from 3 to Ace are included.
+- Crucially, there is **only one '2' card** and **only one '10' card** in the entire deck. The suits for these two special cards are chosen randomly when the deck is created.
+
+Card values are standard, with '3' being the lowest and 'Ace' being the highest. The '2' card has the lowest numerical value, but special rules apply.
+
+## 3. Game Setup
+
+The game progresses through several stages:
+
+1.  **Dealing:**
+    *   Each player is dealt three face-down cards to form their **Last Stand** pile.
+    *   Each player is dealt three face-up cards, which are placed on top of their Last Stand cards, to form the **Last Chance** pile.
+    *   Each player is dealt a three-card **Hand**.
+
+2.  **The Swap (SWAP Stage):**
+    *   After the deal, players can swap any card from their Hand with any card from their Last Chance pile.
+    *   This allows players to strategically move more valuable cards into their hand for early play, while placing less useful cards onto their Last Chance pile.
+    *   Once the player is satisfied, they click "Start Game" to begin.
+
+## 4. Gameplay Mechanics
+
+The game is played in turns, with players attempting to play cards to the Main Play Area (MPA).
+
+### 4.1. Basic Play Rules
+
+*   **Starting the Game:** The first play is a special "play-off". Both the player and the AI select their lowest non-special card. The player with the lower card goes first and their card starts the MPA pile.
+*   **Playing Cards:** On your turn, you must play one or more cards of the same rank that have a value **equal to or higher than** the top card of the MPA.
+*   **Multiple Cards:** If you have multiple cards of the same rank (e.g., two '8's), you can play them all in a single turn. On Easy and Medium difficulty, you *must* play all of them; on Hard and Extreme, the AI has the option to play a subset.
+*   **Empty MPA:** If the MPA is empty, any card can be played to start a new pile.
+*   **"Eating" the Pile:** If you cannot make a valid play, you must "eat" the entire MPA pile. All cards from the MPA are added to your hand, and your turn ends. You cannot choose to eat if you have a valid move.
+
+### 4.2. Special Cards
+
+*   **Two (2) - Reset Card:**
+    *   Can be played on *any* card, regardless of value.
+    *   When played, it "resets" the pile. The '2' is placed on top, but the next player can play any card they wish, as if playing on an empty pile.
+
+*   **Ten (10) - Clear Card:**
+    *   Can be played on *any* card.
+    *   When played, the entire MPA pile is "cleared" and moved to the bin (discard pile).
+    *   The player who played the '10' immediately gets **another turn**.
+
+### 4.3. Four of a Kind
+
+*   If four cards of the same rank are played consecutively (by one or more players), the MPA is automatically cleared (sent to the bin).
+*   The player who played the fourth card gets **another turn**.
+
+### 4.4. Hand Management
+
+*   Players always play from their **Hand** first.
+*   After playing from your hand, if you have fewer than three cards and there are cards left in the deck, you automatically draw back up to three cards.
+*   This draw occurs *after* the effects of your play are resolved (e.g., if you play a '10', the pile clears, and *then* you draw, before taking your bonus turn).
+
+## 5. End Game Phases
+
+### 5.1. Last Chance
+
+*   Once your Hand is empty and the deck is depleted, you must start playing from your face-up **Last Chance** cards.
+*   You must play one of these cards per turn, following the standard play rules.
+*   You cannot "eat" the pile while playing from this pile. If you have no valid moves among your Last Chance cards, you are forced to eat.
+
+### 5.2. Last Stand
+
+*   Once your Last Chance pile is empty, you must play from your face-down **Last Stand** cards.
+*   On your turn, you must blindly select one Last Stand card to play.
+*   **The Bust:** If the chosen card is a valid play, it is played as normal. If it is **not** a valid play, you "bust." You must eat the entire MPA pile, *plus* the failed Last Stand card you just revealed. Your turn then ends.
+
+## 6. Winning the Game
+
+The first player to successfully play their final Last Stand card wins the game.
+
+**Important Rule:** A player cannot win the game by playing a '2' or a '10' as their very last card. If their last remaining card is a special card, they are unable to play it and will eventually be forced to eat if the game state requires it.
+
+## 7. AI Difficulty Levels
+
+The AI's behavior changes based on the difficulty setting:
+
+*   **Easy:** The AI plays predictably, always choosing the lowest-value valid play. It avoids using special cards on an empty pile if it has other options.
+*   **Medium:** The AI is more strategic. It plays low-value cards in normal situations but will play high-value cards to apply pressure when the MPA is large or the deck is small.
+*   **Hard & Extreme:** The AI is much more aggressive. It uses high-value cards to force eats, strategically uses '10's to clear valuable piles, and is better at conserving resources. The "Extreme" AI is even more aggressive about applying pressure and thinning its own hand.

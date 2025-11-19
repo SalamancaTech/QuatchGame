@@ -1,0 +1,87 @@
+# Quatch Card Game: UI, Design, and Animation Overview
+
+This document provides a comprehensive overview of the user interface, design aesthetics, and animations of the Quatch Card Game. It is intended to be a reference for recreating the application in a new programming language.
+
+## 1. Core Design Philosophy
+
+The design aims for a tactile, physical feel within a digital interface. It has a slightly gritty, worn-in aesthetic, suggesting a well-loved card game. The primary color palette is dark and moody, using deep greens and dark grays, with vibrant highlights in yellow and red for important UI elements and actions.
+
+- **Font:** 'Oswald' (sans-serif) is used throughout, providing a bold, condensed look that's easy to read.
+- **Background:** The main game board has a textured green felt appearance, with a vignette, a subtle center wear spot, and a noise texture to give it a realistic feel.
+- **Card Design:**
+    - **Face Down:** A dark red back with a subtle border and randomized "dirt" and "wear" effects to make each card feel unique.
+    - **Face Up:**
+        - **Easy/Medium Difficulty:** Off-white (`bg-stone-100`) background.
+        - **Hard/Extreme Difficulty:** A more aged, yellowish (`bg-amber-200`) background.
+    - **Wear and Tear (Hard/Extreme):** Cards have procedurally generated smudges, spots, creases, and even folded corners to enhance the physical feel.
+    - **Suit Colors:** Traditional red and black, but slightly muted on higher difficulties to match the aged aesthetic.
+    - **Interaction:** Cards lift and gain a colored ring when selected (yellow for selection, green for a valid play). Playable cards in "Easy" mode have a subtle glow to guide the player.
+
+## 2. Main UI Components
+
+### 2.1. PlayerArea
+
+This component is responsible for displaying a player's cards. It has two distinct modes:
+
+- **Human Player (Bottom of Screen):**
+    - **Hand:** Cards are fanned out and overlap if there are too many to fit. The hand is scrollable horizontally if needed. Selected cards lift up for clear visual feedback.
+    - **Last Chance:** Three face-up cards displayed above the hand.
+    - **Last Stand:** Three face-down cards displayed behind the Last Chance cards.
+
+- **AI Opponent (Top of Screen):**
+    - A more compact view. The hand is represented by a single face-down card with a counter. The Last Chance and Last Stand cards are smaller and grouped together.
+    - **"Cheatin'" Mode:** When enabled, the user can click on the AI's hand to see all their cards in a modal, and click on individual Last Stand cards to reveal them.
+
+### 2.2. GameBoard (Center of Screen)
+
+This is the central interaction area.
+
+- **Main Play Area (MPA):** Where cards are played. It shows the top 3 cards in a slightly offset stack. It has a colored ring to indicate the current player's turn (red for player, none for AI).
+- **Deck:** Shows the face-down deck with a counter for remaining cards.
+- **Bin:** Shows a single face-down card with a counter for the number of discarded cards. When "Cheatin'" mode is on, the user can click this to view the contents of the bin.
+- **Combo Counter:** A small `x2`, `x3`, etc., appears above the MPA when multiple cards of the same rank are played in a row.
+
+### 2.3. Modals
+
+Modals are used for menus and important game state changes. They share a consistent design: a dark, semi-transparent background overlay, and a content box with a dark green, slightly transparent background and a yellow border.
+
+- **Difficulty Modal:** Allows the player to choose from four difficulty levels.
+- **Game Rules Modal:** Displays a scrollable list of the game rules.
+- **Edit Names Modal:** Allows the user to change their name and the opponent's name.
+- **Statistics Modal:** Shows stats for the current game.
+- **Game Over Modal:** Announces the winner and loser, and provides a "Play Again" button.
+- **Bin View Modal:** A modal for viewing cards in the bin or the opponent's hand (in cheat mode).
+
+## 3. Key Animations
+
+Animations are a critical part of the game's feel, providing visual feedback for player actions. They are defined with CSS keyframes in `index.html`.
+
+- **`play-card-animation`:**
+    - **Trigger:** When a card is played.
+    - **Effect:** The card travels from the player's hand to the MPA in an arc. It scales up slightly and rotates at the peak of the arc, then lands on the pile with a slight random rotation.
+    - **Duration:** 0.7s.
+
+- **`eat-card-animation`:**
+    - **Trigger:** When a player "eats" the pile.
+    - **Effect:** Cards from the MPA fly off in random directions towards the player's hand area, shrinking and fading out as they travel. They also spin wildly.
+    - **Duration:** 0.6s.
+
+- **`shuffle-animation`:**
+    - **Trigger:** At the start of a new game, when the deck is clicked.
+    - **Effect:** The deck rapidly shakes left and right with slight rotations, mimicking a shuffle.
+    - **Duration:** 0.5s.
+
+- **Special Message Animations (`four-of-a-kind-animation`, `begin-animation`):**
+    - **Trigger:** For game events like "4 OF A KIND!", "Cleared!", "Begin!", etc.
+    - **Effect:** Large, stylized text appears in the center of the screen. It scales in, rotates slightly, holds for a moment, and then scales up and fades out.
+    - **Duration:** 1.2s - 1.5s.
+
+- **`glow-effect` (for Special Effects):**
+    - **Trigger:** When a 2 (Reset) or 10 (Clear) is played.
+    - **Effect:** A colored ring (blue for reset, yellow for clear) rapidly expands from the MPA and fades out, like a shockwave.
+    - **Duration:** 0.5s.
+
+- **`prompt-fade-in`:**
+    - **Trigger:** For less dramatic messages or modal pop-ups.
+    - **Effect:** The element fades in and slides up slightly.
+    - **Duration:** 0.5s.
